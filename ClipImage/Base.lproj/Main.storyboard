@@ -1,25 +1,127 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="fwS-YA-iX7">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="tne-QT-ifu">
+        <!--Navigation Controller-->
+        <scene sceneID="BhH-UO-KN6">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
-                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <navigationController id="fwS-YA-iX7" sceneMemberID="viewController">
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="9bG-PX-Y09">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="IRR-Ch-Qk8" kind="relationship" relationship="rootViewController" id="0b6-7a-ANI"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vSx-TR-ZtP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="-465" y="494.25"/>
+        </scene>
+        <!--显示裁剪完成图片-->
+        <scene sceneID="4vf-nZ-a5s">
+            <objects>
+                <viewController id="IRR-Ch-Qk8" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="XJy-uA-gQa"/>
+                        <viewControllerLayoutGuide type="bottom" id="Dtn-cQ-2dK"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Y0K-aw-CEp">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hYH-Ca-edc">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="250" id="Zhd-8w-aIU"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="Zhd-8w-aIU"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="Zhd-8w-aIU"/>
+                                    </mask>
+                                </variation>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="hYH-Ca-edc" firstAttribute="leading" secondItem="Y0K-aw-CEp" secondAttribute="leading" id="Se7-ot-xlK"/>
+                            <constraint firstItem="hYH-Ca-edc" firstAttribute="top" secondItem="XJy-uA-gQa" secondAttribute="bottom" constant="95" id="bJx-UZ-dMY"/>
+                            <constraint firstAttribute="trailing" secondItem="hYH-Ca-edc" secondAttribute="trailing" id="uo8-8b-gP2"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="hYH-Ca-edc"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="Se7-ot-xlK"/>
+                                <exclude reference="bJx-UZ-dMY"/>
+                                <exclude reference="uo8-8b-gP2"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="hYH-Ca-edc"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="Se7-ot-xlK"/>
+                                <include reference="bJx-UZ-dMY"/>
+                                <include reference="uo8-8b-gP2"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" title="显示裁剪完成图片" id="fuR-lA-Q4d">
+                        <barButtonItem key="rightBarButtonItem" title="裁剪" id="vId-kO-1gL">
+                            <connections>
+                                <segue destination="1Re-tv-ETX" kind="show" identifier="ClipViewController" id="Ut7-a7-NNY"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="clipedImageView" destination="hYH-Ca-edc" id="L2r-sK-Wwc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zAg-hH-XD7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="178.5" y="494.25"/>
+        </scene>
+        <!--图片裁剪-->
+        <scene sceneID="6jY-Fi-xfv">
+            <objects>
+                <viewController id="1Re-tv-ETX" customClass="ClipViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Jsa-b0-FON"/>
+                        <viewControllerLayoutGuide type="bottom" id="dZs-gz-ie9"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="dfD-8H-sy8">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="图片裁剪" id="NVF-M5-nsb">
+                        <barButtonItem key="leftBarButtonItem" title="取消" id="ahY-uN-ET3">
+                            <connections>
+                                <action selector="cancelClipImage:" destination="1Re-tv-ETX" id="42m-fb-3Ce"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="完成" id="hHg-Jw-wFt">
+                            <connections>
+                                <action selector="successClipImage:" destination="1Re-tv-ETX" id="AAA-qq-Tzu"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mXX-UQ-6uD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="783" y="494.25"/>
         </scene>
     </scenes>
 </document>

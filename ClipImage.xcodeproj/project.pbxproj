@@ -13,6 +13,10 @@
 		FEF757F91DC82C510070F0C5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FEF757F71DC82C510070F0C5 /* Main.storyboard */; };
 		FEF757FB1DC82C510070F0C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FEF757FA1DC82C510070F0C5 /* Assets.xcassets */; };
 		FEF757FE1DC82C510070F0C5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FEF757FC1DC82C510070F0C5 /* LaunchScreen.storyboard */; };
+		FEF758081DC82CD90070F0C5 /* ClipImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF758071DC82CD90070F0C5 /* ClipImageView.m */; };
+		FEF7580B1DC834CB0070F0C5 /* ClipViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF7580A1DC834CB0070F0C5 /* ClipViewController.m */; };
+		FEF7580E1DC847500070F0C5 /* ClipAreaView.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF7580D1DC847500070F0C5 /* ClipAreaView.m */; };
+		FEF758111DCC2CA60070F0C5 /* MidLineView.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF758101DCC2CA60070F0C5 /* MidLineView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +30,14 @@
 		FEF757FA1DC82C510070F0C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FEF757FD1DC82C510070F0C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FEF757FF1DC82C510070F0C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FEF758061DC82CD90070F0C5 /* ClipImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClipImageView.h; sourceTree = "<group>"; };
+		FEF758071DC82CD90070F0C5 /* ClipImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClipImageView.m; sourceTree = "<group>"; };
+		FEF758091DC834CB0070F0C5 /* ClipViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClipViewController.h; sourceTree = "<group>"; };
+		FEF7580A1DC834CB0070F0C5 /* ClipViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClipViewController.m; sourceTree = "<group>"; };
+		FEF7580C1DC847500070F0C5 /* ClipAreaView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClipAreaView.h; sourceTree = "<group>"; };
+		FEF7580D1DC847500070F0C5 /* ClipAreaView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClipAreaView.m; sourceTree = "<group>"; };
+		FEF7580F1DCC2CA60070F0C5 /* MidLineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MidLineView.h; sourceTree = "<group>"; };
+		FEF758101DCC2CA60070F0C5 /* MidLineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MidLineView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +54,7 @@
 		FEF757E21DC82C500070F0C5 = {
 			isa = PBXGroup;
 			children = (
+				FEF758051DC82CBA0070F0C5 /* Clip */,
 				FEF757ED1DC82C510070F0C5 /* ClipImage */,
 				FEF757EC1DC82C500070F0C5 /* Products */,
 			);
@@ -62,6 +75,8 @@
 				FEF757F21DC82C510070F0C5 /* AppDelegate.m */,
 				FEF757F41DC82C510070F0C5 /* ViewController.h */,
 				FEF757F51DC82C510070F0C5 /* ViewController.m */,
+				FEF758091DC834CB0070F0C5 /* ClipViewController.h */,
+				FEF7580A1DC834CB0070F0C5 /* ClipViewController.m */,
 				FEF757F71DC82C510070F0C5 /* Main.storyboard */,
 				FEF757FA1DC82C510070F0C5 /* Assets.xcassets */,
 				FEF757FC1DC82C510070F0C5 /* LaunchScreen.storyboard */,
@@ -77,6 +92,19 @@
 				FEF757EF1DC82C510070F0C5 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		FEF758051DC82CBA0070F0C5 /* Clip */ = {
+			isa = PBXGroup;
+			children = (
+				FEF758061DC82CD90070F0C5 /* ClipImageView.h */,
+				FEF758071DC82CD90070F0C5 /* ClipImageView.m */,
+				FEF7580C1DC847500070F0C5 /* ClipAreaView.h */,
+				FEF7580D1DC847500070F0C5 /* ClipAreaView.m */,
+				FEF7580F1DCC2CA60070F0C5 /* MidLineView.h */,
+				FEF758101DCC2CA60070F0C5 /* MidLineView.m */,
+			);
+			path = Clip;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -150,9 +178,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FEF758081DC82CD90070F0C5 /* ClipImageView.m in Sources */,
+				FEF7580B1DC834CB0070F0C5 /* ClipViewController.m in Sources */,
 				FEF757F61DC82C510070F0C5 /* ViewController.m in Sources */,
+				FEF758111DCC2CA60070F0C5 /* MidLineView.m in Sources */,
 				FEF757F31DC82C510070F0C5 /* AppDelegate.m in Sources */,
 				FEF757F01DC82C510070F0C5 /* main.m in Sources */,
+				FEF7580E1DC847500070F0C5 /* ClipAreaView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,8 +7,11 @@
 //
 
 #import "ViewController.h"
+#import "ClipViewController.h"
 
-@interface ViewController ()
+@interface ViewController ()<ClipViewControllerDelegate>
+
+@property (weak, nonatomic) IBOutlet UIImageView *clipedImageView;
 
 @end
 
@@ -16,12 +19,26 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if([segue.identifier isEqualToString:@"ClipViewController"])
+    {
+        ClipViewController *clipVC = segue.destinationViewController;
+        clipVC.delegate = self;
+    }
 }
+
+- (void)didSuccessClipImage:(UIImage *)clipedImage
+{
+    self.clipedImageView.backgroundColor = [UIColor redColor];
+    self.clipedImageView.contentMode = UIViewContentModeScaleAspectFit;
+    self.clipedImageView.image = clipedImage;
+}
+
+
+#pragma mark -- getter
 
 @end
