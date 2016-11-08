@@ -31,6 +31,7 @@
                         <viewControllerLayoutGuide type="bottom" id="Dtn-cQ-2dK"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Y0K-aw-CEp">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hYH-Ca-edc">
@@ -80,7 +81,7 @@
                     <navigationItem key="navigationItem" title="显示裁剪完成图片" id="fuR-lA-Q4d">
                         <barButtonItem key="rightBarButtonItem" title="裁剪" id="vId-kO-1gL">
                             <connections>
-                                <segue destination="1Re-tv-ETX" kind="show" identifier="ClipViewController" id="Ut7-a7-NNY"/>
+                                <action selector="touchClipItem:" destination="IRR-Ch-Qk8" id="mzA-r0-KMt"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -102,21 +103,15 @@
                         <viewControllerLayoutGuide type="bottom" id="dZs-gz-ie9"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="dfD-8H-sy8">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="图片裁剪" id="NVF-M5-nsb">
-                        <barButtonItem key="leftBarButtonItem" title="取消" id="ahY-uN-ET3">
-                            <connections>
-                                <action selector="cancelClipImage:" destination="1Re-tv-ETX" id="42m-fb-3Ce"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="完成" id="hHg-Jw-wFt">
-                            <connections>
-                                <action selector="successClipImage:" destination="1Re-tv-ETX" id="AAA-qq-Tzu"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="leftBarButtonItem" title="取消" id="ahY-uN-ET3"/>
+                        <barButtonItem key="rightBarButtonItem" title="完成" id="hHg-Jw-wFt"/>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mXX-UQ-6uD" userLabel="First Responder" sceneMemberID="firstResponder"/>

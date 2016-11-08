@@ -29,6 +29,7 @@
     if([super initWithFrame:frame])
     {
         self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.7];
+        self.clipAreaType = ClipAreaViewTypeRect;
     }
     return self;
 }
@@ -38,7 +39,10 @@
     [super layoutSubviews];
     
     // 创建裁剪区域
-    [self setupClipView];
+    // 矩形
+    if(self.clipAreaType == ClipAreaViewTypeRect){
+       [self setupClipView];
+    }
 }
 
 /**
@@ -82,8 +86,14 @@
 - (void)resetClipViewFrame
 {
     UIBezierPath *path = [UIBezierPath bezierPathWithRect:self.bounds];
-    UIBezierPath *clearPath = [[UIBezierPath bezierPathWithRect:self.clipView.frame] bezierPathByReversingPath];
-    
+    UIBezierPath *clearPath = nil;
+    // 矩形
+    if(self.clipAreaType == ClipAreaViewTypeRect){
+        clearPath = [[UIBezierPath bezierPathWithRect:self.clipView.frame] bezierPathByReversingPath];
+    }
+    else {// 圆形
+        clearPath = [[UIBezierPath bezierPathWithOvalInRect:self.clipView.frame] bezierPathByReversingPath];
+    }
     [path appendPath:clearPath];
     CAShapeLayer *shareLayer = (CAShapeLayer *)self.layer.mask;
     if(!shareLayer)
@@ -94,6 +104,10 @@
     shareLayer.path = path.CGPath;
 }
 
+- (void)dealloc
+{
+    [self.clipView removeGestureRecognizer:self.clipViewPan];
+}
 
 #pragma mark -- getter/setter
 
@@ -102,7 +116,7 @@
     if(!_clipView)
     {
         _clipView = [[UIView alloc] initWithFrame:CGRectZero];
-        _clipView.backgroundColor = [UIColor blackColor];
+        _clipView.backgroundColor = [UIColor clearColor];
     }
     return _clipView;
 }

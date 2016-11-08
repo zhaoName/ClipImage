@@ -7,12 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ClipAreaView.h"
 
 @interface ClipImageView : UIView
 
 
 @property (nonatomic, strong) UIImage *clipImage; /**< 需要被裁剪的图片*/
 @property (nonatomic, strong) UIColor *midLineColor; /**< 中间线颜色*/
+@property (nonatomic, assign) ClipAreaViewType clipType;/**< 裁剪区域的类型*/
 
 
 /**
