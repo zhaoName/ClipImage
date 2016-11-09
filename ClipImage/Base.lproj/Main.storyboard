@@ -111,12 +111,11 @@
                         <barButtonItem key="leftBarButtonItem" title="取消" id="ahY-uN-ET3"/>
                         <barButtonItem key="rightBarButtonItem" title="完成" id="hHg-Jw-wFt"/>
                     </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mXX-UQ-6uD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="783" y="494.25"/>
+            <point key="canvasLocation" x="652" y="494"/>
         </scene>
     </scenes>
 </document>

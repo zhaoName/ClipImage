@@ -10,11 +10,12 @@
 #import "MidLineView.h"
 
 #define CORNER_WIDTH 16
+#define CLIP_ARC_DIAMETER 240
 
 @interface ClipImageView ()
 
-@property (nonatomic, strong) UIImageView *clipImageView;
-@property (nonatomic, strong) ClipAreaView *clipAreaView;
+@property (nonatomic, strong) UIImageView *clipImageView; /**< 被裁剪的图片*/
+@property (nonatomic, strong) ClipAreaView *clipAreaView; /**< 裁剪区域*/
 @property (nonatomic, assign) CGFloat clipViewX; /**< 裁剪区域的X*/
 @property (nonatomic, assign) CGFloat clipViewY; /**< 裁剪区域的Y*/
 // 四个拐角
@@ -39,6 +40,8 @@
 @property (nonatomic, strong) MidLineView *rightMidLine;
 
 @property (nonatomic, assign) CGFloat lastDistance; /**< 先前两个手指的距离*/
+@property (nonatomic, assign) CGPoint imageStartMoveCenter;
+@property (nonatomic, assign) CGPoint startTouchPoint;
 
 @end
 
@@ -74,18 +77,28 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
-    [self.clipAreaView addObserver:self forKeyPath:@"clipView.frame" options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew context:nil];
-    [self.clipAreaView addObserver:self forKeyPath:@"clipView.center" options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew context:nil];
-    
     [self addSubview:self.clipImageView];
     [self addSubview:self.clipAreaView];
-    // 设置裁剪区域的四个拐角
-    [self setupCornerImageView];
-    // 根据四个拐角的位置确定裁剪区域(透明区域)
-    [self resetClipViewFrameWhenCornerFrameSure];
-    // 创建中间线
-    [self setupMidLine];
+    
+    if(self.clipType == ClipAreaViewTypeRect)
+    {
+        [self.clipAreaView addObserver:self forKeyPath:@"clipView.frame" options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew context:nil];
+        [self.clipAreaView addObserver:self forKeyPath:@"clipView.center" options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew context:nil];
+        // 设置裁剪区域的四个拐角
+        [self setupCornerImageView];
+        // 根据四个拐角的位置确定裁剪区域(透明区域)
+        [self resetClipViewFrameWhenCornerFrameSure];
+        // 创建中间线
+        [self setupMidLine];
+    }
+    else
+    {
+        // 圆形裁剪区域最大直径240
+        CGFloat w =  MIN(CLIP_WIDTH, CLIP_HEIGHT) < CLIP_ARC_DIAMETER ?:CLIP_ARC_DIAMETER;
+        CGFloat x = (CLIP_WIDTH - w) / 2;
+        CGFloat y = (CLIP_HEIGHT - w) / 2;
+        self.clipAreaView.clipView.frame = CGRectMake(x, y, w, w);
+    }
 }
 
 #pragma mark -- KVO
@@ -93,7 +106,7 @@
 // KVO监测裁剪区域frame或center的改变
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
 {
-    // 随着长按手势的移动，改变裁剪区域的frame
+    // 随着点击手势的移动，改变裁剪区域的frame
     [self.clipAreaView resetClipViewFrame];
     // 随着裁剪区域的移动，改变四个拐角图片的位置
     [self resetCornerViewFrameWhenClipViewMoving];
@@ -140,7 +153,7 @@
 }
 
 /**
- *  处理拐角的长按手势，使裁剪区域能够随着某个corner的移动而变化
+ *  处理拐角的点击手势，使裁剪区域能够随着某个corner的移动而变化
  */
 - (void)handleCornerPan:(UIPanGestureRecognizer *)panGesture
 {
@@ -159,7 +172,7 @@
     }
     else if(panGesture.state == UIGestureRecognizerStateChanged)
     {
-        // 长按不同corner，改变裁剪区域的frame，从而通过KVO改变Corner的frame
+        // 点击不同corner，改变裁剪区域的frame，从而通过KVO改变Corner的frame
         if([imageView isEqual:self.topLeftImageView])
         {
             // 将要移动到的位置
@@ -207,10 +220,10 @@
     self.bottomRightImageView.frame = CGRectMake(CGRectGetMaxX(self.clipAreaView.clipView.frame) - CORNER_WIDTH, CGRectGetMaxY(self.clipAreaView.clipView.frame) - CORNER_WIDTH, CORNER_WIDTH, CORNER_WIDTH);
 }
 
-#pragma mark -- 中间长按手势线
+#pragma mark -- 中间点击手势线
 
 /**
- *  创建中间长按手势线
+ *  创建中间点击手势线
  */
 - (void)setupMidLine
 {
@@ -275,57 +288,124 @@
 
 #pragma mark -- 缩放裁剪区域
 
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    NSSet *allTouchs = [event allTouches];
+    if(allTouchs.count == 1) // 一个手指移动图片
+    {
+        self.imageStartMoveCenter = self.clipImageView.center;
+        self.startTouchPoint = [[touches anyObject] locationInView:self];
+    }
+}
+
+// 移动手指
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     NSSet *allTouchs = [event allTouches];
-    if(allTouchs.count == 2)
+    if(allTouchs.count == 1) // 一个手指移动图片
     {
-        [self scaleClipViewWithTouches:[allTouchs allObjects]];
+        CGPoint movePoint = [[touches anyObject] locationInView:self];
+        // 手指移动的距离
+        CGFloat x = movePoint.x - self.startTouchPoint.x;
+        CGFloat y = movePoint.y - self.startTouchPoint.y;
+        
+        CGPoint willMoveToPoint = CGPointMake(self.imageStartMoveCenter.x + x, self.imageStartMoveCenter.y + y);
+        self.clipImageView.center = willMoveToPoint;
+    }
+    else if(allTouchs.count == 2) // 两个手指缩放
+    {
+        if(self.clipType == ClipAreaViewTypeRect)
+        {
+            [self scaleClipView:self.clipAreaView.clipView withTouches:[allTouchs allObjects]];
+        }
+        else
+        {
+            [self scaleClipView:self.clipImageView withTouches:[allTouchs allObjects]];
+        }
+    }
+}
+
+// 手指移动结束
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    if(self.clipType == ClipAreaViewTypeArc)
+    {
+        [self correctClipImageViewFrame];
     }
 }
 
 /**
- *  根据两个手指的变化，缩放裁剪区域
+ *  根据两个手指的变化，缩放裁剪区域 或缩放被裁剪的图片
  */
-- (void)scaleClipViewWithTouches:(NSArray *)touches
+- (void)scaleClipView:(UIView *)view withTouches:(NSArray *)touches
 {
     CGPoint touch1 = [touches[0] locationInView:self];
     CGPoint touch2 = [touches[1] locationInView:self];
     
     // 计算两个手指的距离
     CGFloat distance = sqrtf((touch1.x - touch2.x)*(touch1.x - touch2.x) + (touch1.y - touch2.y)*(touch1.y - touch2.y));
-    // 缩放裁剪区域，宽高最小为50
-    CGRect clipViewFrame = self.clipAreaView.clipView.frame;
+    // 缩放裁剪区域，宽高最小为100
+    CGRect viewFrame = view.frame;
     
-    // 两指距离增加 即裁剪区域放大
+    // 两指距离增加 即裁剪区域或图片放大
     if(distance > self.lastDistance + 1)
     {
-        clipViewFrame.size.width += 8;
+        viewFrame.size.width += 8;
         self.lastDistance = distance;
     }
-    // 两指距离缩小 即裁剪区域缩小
-    else if(distance < self.lastDistance)
+    // 两指距离缩小 即裁剪区域或图片缩小
+    else if(distance < self.lastDistance - 1)
     {
-        clipViewFrame.size.width -= 8;
+        viewFrame.size.width -= 8;
         self.lastDistance = distance;
     }
     // 等比例缩放 换算出高度要变化的距离
-    clipViewFrame.size.height = clipViewFrame.size.width * CGRectGetHeight(self.clipAreaView.clipView.frame) / CGRectGetWidth(self.clipAreaView.clipView.frame);
+    viewFrame.size.height = viewFrame.size.width * CGRectGetHeight(view.frame) / CGRectGetWidth(view.frame);
     
     // 算出x，y变化的距离
-    CGFloat scaleX = (clipViewFrame.size.width - CGRectGetWidth(self.clipAreaView.clipView.frame)) / 2.0;
-    CGFloat scaleY = (clipViewFrame.size.height - CGRectGetHeight(self.clipAreaView.clipView.frame)) / 2.0;
+    CGFloat scaleX = (viewFrame.size.width - CGRectGetWidth(view.frame)) / 2.0;
+    CGFloat scaleY = (viewFrame.size.height - CGRectGetHeight(view.frame)) / 2.0;
     
-    CGFloat actualX = clipViewFrame.origin.x - scaleX;
-    CGFloat actualY = clipViewFrame.origin.y - scaleY;
-    // 限定x,y,W,H
-    if(actualX < 0 || actualY < 0) return;
-    // 最大W,H
-    if(clipViewFrame.size.width + actualX > CLIP_WIDTH || clipViewFrame.size.height + actualY > CLIP_HEIGHT) return;
-    // 最小W,H
-    if(clipViewFrame.size.width <= 100 || clipViewFrame.size.height <= 100) return;
+    CGFloat actualX = viewFrame.origin.x - scaleX;
+    CGFloat actualY = viewFrame.origin.y - scaleY;
     
-    self.clipAreaView.clipView.frame = CGRectMake(actualX, actualY, clipViewFrame.size.width, clipViewFrame.size.height);
+    if(self.clipType == ClipAreaViewTypeRect)
+    {
+        // 限定x,y,W,H
+        if(actualX < 0 || actualY < 0) return;
+        // 最大W,H
+        if(viewFrame.size.width + actualX > CLIP_WIDTH || viewFrame.size.height + actualY > CLIP_HEIGHT) return;
+        // 最小W,H
+        if(viewFrame.size.width <= 100 || viewFrame.size.height <= 100) return;
+        // 改变裁剪区域的frame
+        view.frame = CGRectMake(actualX, actualY, viewFrame.size.width, viewFrame.size.height);
+    }
+    else
+    {
+        // 改变图片的frame
+        view.frame = CGRectMake(actualX, actualY, viewFrame.size.width, viewFrame.size.height);
+    }
+}
+
+/**
+ *  一个手指移动结束后，重置被裁剪图片的frame
+ */
+- (void)correctClipImageViewFrame
+{
+    CGFloat clipImageX = CGRectGetMinX(self.clipImageView.frame);
+    CGFloat clipImageY = CGRectGetMinY(self.clipImageView.frame);
+    CGFloat clipImageW = CGRectGetWidth(self.clipImageView.frame);
+    CGFloat clipImageH = CGRectGetHeight(self.clipImageView.frame);
+    
+    // 图片的X值最大不能超过裁剪区域的X值 最小不能小于..
+    CGFloat actualX = MIN(MAX(CGRectGetMaxX(self.clipAreaView.clipView.frame) - clipImageW, clipImageX), CGRectGetMinX(self.clipAreaView.clipView.frame));
+    // 图片的Y值最大不能超过裁剪区域的Y值 最小不能小于..
+    CGFloat actualY = MIN(MAX(CGRectGetMaxY(self.clipAreaView.clipView.frame) - clipImageH, clipImageY), CGRectGetMinY(self.clipAreaView.clipView.frame));
+    
+    CGFloat actualW = MIN(MAX(CLIP_ARC_DIAMETER + 10, clipImageW), CGRectGetWidth(self.clipAreaView.frame) * 1.5);
+    CGFloat actualH = MIN(MAX(CLIP_ARC_DIAMETER + 10, clipImageH), CGRectGetHeight(self.clipAreaView.frame) * 1.5);
+    
+    self.clipImageView.frame = CGRectMake(actualX, actualY, actualW, actualH);
 }
 
 #pragma mark -- 裁剪
@@ -349,13 +429,16 @@
 
 - (void)dealloc
 {
-    [self.clipAreaView removeObserver:self forKeyPath:@"clipView.frame"];
-    [self.clipAreaView removeObserver:self forKeyPath:@"clipView.center"];
-    
-    [self.topLeftImageView removeGestureRecognizer:self.topLeftPan];
-    [self.topRightImageView removeGestureRecognizer:self.topRightPan];
-    [self.bottomLeftImageView removeGestureRecognizer:self.bottomLeftPan];
-    [self.topRightImageView removeGestureRecognizer:self.bottomRightPan];
+    if(self.clipType == ClipAreaViewTypeRect)
+    {
+        [self.clipAreaView removeObserver:self forKeyPath:@"clipView.frame"];
+        [self.clipAreaView removeObserver:self forKeyPath:@"clipView.center"];
+        
+        [self.topLeftImageView removeGestureRecognizer:self.topLeftPan];
+        [self.topRightImageView removeGestureRecognizer:self.topRightPan];
+        [self.bottomLeftImageView removeGestureRecognizer:self.bottomLeftPan];
+        [self.topRightImageView removeGestureRecognizer:self.bottomRightPan];
+    }
 }
 
 #pragma mark -- getter/setter

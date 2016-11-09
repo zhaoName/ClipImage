@@ -38,15 +38,20 @@
 {
     [super layoutSubviews];
     
-    // 创建裁剪区域
-    // 矩形
-    if(self.clipAreaType == ClipAreaViewTypeRect){
+    // 创建裁剪区域 矩形
+    if(self.clipAreaType == ClipAreaViewTypeRect)
+    {
        [self setupClipView];
+    }
+    else
+    {
+        [self addSubview:self.clipView];
+        [self resetClipViewFrame];
     }
 }
 
 /**
- *  添加长按手势
+ *  添加点击手势
  */
 - (void)setupClipView
 {
@@ -56,7 +61,7 @@
 }
 
 /**
- *  处理长按手势 重置裁剪区域
+ *  处理点击手势 重置裁剪区域
  */
 - (void)handleCropAreaPan:(UIPanGestureRecognizer *)panGesture
 {
