@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FEEF2C091DD409400080EFBC /* UIImage+Operation.m in Sources */ = {isa = PBXBuildFile; fileRef = FEEF2C081DD409400080EFBC /* UIImage+Operation.m */; };
 		FEF757F01DC82C510070F0C5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF757EF1DC82C510070F0C5 /* main.m */; };
 		FEF757F31DC82C510070F0C5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF757F21DC82C510070F0C5 /* AppDelegate.m */; };
 		FEF757F61DC82C510070F0C5 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF757F51DC82C510070F0C5 /* ViewController.m */; };
@@ -20,6 +21,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FEEF2C071DD409400080EFBC /* UIImage+Operation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Operation.h"; sourceTree = "<group>"; };
+		FEEF2C081DD409400080EFBC /* UIImage+Operation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Operation.m"; sourceTree = "<group>"; };
 		FEF757EB1DC82C500070F0C5 /* ClipImage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClipImage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FEF757EF1DC82C510070F0C5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		FEF757F11DC82C510070F0C5 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -103,6 +106,8 @@
 				FEF7580D1DC847500070F0C5 /* ClipAreaView.m */,
 				FEF7580F1DCC2CA60070F0C5 /* MidLineView.h */,
 				FEF758101DCC2CA60070F0C5 /* MidLineView.m */,
+				FEEF2C071DD409400080EFBC /* UIImage+Operation.h */,
+				FEEF2C081DD409400080EFBC /* UIImage+Operation.m */,
 			);
 			path = Clip;
 			sourceTree = "<group>";
@@ -181,6 +186,7 @@
 				FEF758081DC82CD90070F0C5 /* ClipImageView.m in Sources */,
 				FEF7580B1DC834CB0070F0C5 /* ClipViewController.m in Sources */,
 				FEF757F61DC82C510070F0C5 /* ViewController.m in Sources */,
+				FEEF2C091DD409400080EFBC /* UIImage+Operation.m in Sources */,
 				FEF758111DCC2CA60070F0C5 /* MidLineView.m in Sources */,
 				FEF757F31DC82C510070F0C5 /* AppDelegate.m in Sources */,
 				FEF757F01DC82C510070F0C5 /* main.m in Sources */,
@@ -296,6 +302,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = ClipImage/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = zhaoName.ClipImage;
@@ -307,6 +314,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = ClipImage/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = zhaoName.ClipImage;

@@ -69,7 +69,7 @@
 {
     if(!_clipImageView)
     {
-        _clipImageView = [ClipImageView initWithFrame:CGRectMake(0, 200, Screen_Width, 400)];
+        _clipImageView = [ClipImageView initWithFrame:CGRectMake(0, 100, Screen_Width, 400)];
         //_clipImageView.contentMode = UIViewContentModeScaleAspectFit;
         _clipImageView.midLineColor = [UIColor redColor];
         _clipImageView.clipType = ClipAreaViewTypeArc;

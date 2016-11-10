@@ -25,14 +25,7 @@
 
 - (IBAction)touchClipItem:(UIBarButtonItem *)sender
 {
-#if TARGET_IPHONE_SIMULATOR//模拟器
-    ClipViewController *clipVC = [[ClipViewController alloc] init];
-    clipVC.delegate = self;
-    clipVC.needClipImage = [UIImage imageNamed:@"dog"];
-    [self.navigationController pushViewController:clipVC animated:YES];
-#elif TARGET_OS_IPHONE//真机
     [self openCameraOrPhotoLibrary];
-#endif
 }
 
 #pragma mark  -- 打开相机或相册
@@ -165,7 +158,7 @@
     self.clipedImageView.contentMode = UIViewContentModeScaleAspectFit;
     self.clipedImageView.image = clipedImage;
     
-    [self.navigationController popViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

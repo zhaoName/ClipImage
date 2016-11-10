@@ -291,7 +291,7 @@
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     NSSet *allTouchs = [event allTouches];
-    if(allTouchs.count == 1) // 一个手指移动图片
+    if(allTouchs.count == 1 && self.clipType == ClipAreaViewTypeArc) // 一个手指移动图片
     {
         self.imageStartMoveCenter = self.clipImageView.center;
         self.startTouchPoint = [[touches anyObject] locationInView:self];
@@ -302,7 +302,7 @@
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     NSSet *allTouchs = [event allTouches];
-    if(allTouchs.count == 1) // 一个手指移动图片
+    if(allTouchs.count == 1 && self.clipType == ClipAreaViewTypeArc) // 一个手指移动图片
     {
         CGPoint movePoint = [[touches anyObject] locationInView:self];
         // 手指移动的距离
@@ -402,8 +402,8 @@
     // 图片的Y值最大不能超过裁剪区域的Y值 最小不能小于..
     CGFloat actualY = MIN(MAX(CGRectGetMaxY(self.clipAreaView.clipView.frame) - clipImageH, clipImageY), CGRectGetMinY(self.clipAreaView.clipView.frame));
     
-    CGFloat actualW = MIN(MAX(CLIP_ARC_DIAMETER + 10, clipImageW), CGRectGetWidth(self.clipAreaView.frame) * 1.5);
-    CGFloat actualH = MIN(MAX(CLIP_ARC_DIAMETER + 10, clipImageH), CGRectGetHeight(self.clipAreaView.frame) * 1.5);
+    CGFloat actualW = MIN(MAX(CLIP_ARC_DIAMETER + 10, clipImageW), self.clipImage.size.width * 1.5);
+    CGFloat actualH = MIN(MAX(CLIP_ARC_DIAMETER + 10, clipImageH), self.clipImage.size.height * 1.5);
     
     self.clipImageView.frame = CGRectMake(actualX, actualY, actualW, actualH);
 }
@@ -412,14 +412,39 @@
 
 - (UIImage *)getClipedImage
 {
-    CGRect clipViewFrame = self.clipAreaView.clipView.frame;
-    CGFloat scaleW = self.clipImage.size.width / self.clipImageView.frame.size.width;
-    CGFloat scaleH = self.clipImage.size.height / self.clipImageView.frame.size.height;
-    // 实际需要裁剪的frame
-    CGRect frame = CGRectMake(clipViewFrame.origin.x * scaleW, clipViewFrame.origin.y * scaleH, clipViewFrame.size.width * scaleW, clipViewFrame.size.height * scaleH);
+    if(self.clipType == ClipAreaViewTypeRect)
+    {
+        return [self clipImageWithRectangle]; // 矩形裁剪框
+    }
+    else // 圆形裁剪框
+    {
+        UIImage *subImage = [self clipImageWithRectangle];
+        // 将裁剪出来的矩形修改成圆形
+        CGFloat radius = MIN(subImage.size.width, subImage.size.height) / 2.0;
+        UIGraphicsBeginImageContextWithOptions(CGSizeMake(subImage.size.width, subImage.size.height), NO, 0);
+        UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter:CGPointMake(subImage.size.width/2, subImage.size.height/2) radius:radius startAngle:0 endAngle:2*M_PI clockwise:0];
+        [path addClip];
+        [subImage drawAtPoint:CGPointZero];
+        UIImage *clipImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        return clipImage;
+    }
+}
+
+- (UIImage *)clipImageWithRectangle
+{
+    // 裁剪框是矩形时，self.clipAreaView与self.clipImageView的frame一样 所以转换坐标相当于没变
+    // 裁剪框是圆形时，由于图片可以缩放，必须重新计算裁剪框的frame，主要是重算x,y
+    CGRect convertFrame = [self.clipAreaView convertRect:self.clipAreaView.clipView.frame toView:self.clipImageView];
     
-    //NSLog(@"%@ %@", NSStringFromCGRect(frame), NSStringFromCGRect(self.clipAreaView.clipView.frame));
-    // 这个方法所截出来的图是按原有图片的size算(329*329)，不是你给出的(320*250)算
+    //imageView的size可能和iamge的size不一样，而裁剪是按image的size算，这里必须换算
+    CGFloat scaleW =  self.clipImage.size.width / self.clipImageView.frame.size.width;
+    CGFloat scaleH =  self.clipImage.size.height / self.clipImageView.frame.size.height;
+    // 实际需要裁剪的frame
+    CGRect frame = CGRectMake(convertFrame.origin.x * scaleW, convertFrame.origin.y * scaleH, convertFrame.size.width * scaleW, convertFrame.size.height * scaleH);
+    
+    //NSLog(@"%@ %@", NSStringFromCGRect(self.clipImageView.frame), NSStringFromCGRect(self.clipAreaView.clipView.frame));
+    // 这个方法所截出来的图是按原有图片的size算，不是你给出的imageView的size算
     CGImageRef imageRef = CGImageCreateWithImageInRect(self.clipImageView.image.CGImage, frame);
     UIImage *subImage = [UIImage imageWithCGImage:imageRef];
     CGImageRelease(imageRef);
