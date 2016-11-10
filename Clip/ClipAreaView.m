@@ -4,7 +4,7 @@
 //
 //  Created by zhao on 16/11/1.
 //  Copyright © 2016年 zhaoName. All rights reserved.
-//
+//  裁剪区域
 
 #import "ClipAreaView.h"
 

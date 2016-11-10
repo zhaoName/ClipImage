@@ -4,7 +4,7 @@
 //
 //  Created by zhao on 16/11/4.
 //  Copyright © 2016年 zhaoName. All rights reserved.
-//
+//  中间线
 
 #import <UIKit/UIKit.h>
 
@@ -22,8 +22,8 @@ typedef NS_ENUM(NSInteger, MidLineViewType)
 
 @interface MidLineView : UIView
 
-@property (nonatomic, assign) CGFloat midLineWidth;
-@property (nonatomic, assign) CGFloat midLineHeight;
+@property (nonatomic, assign) CGFloat midLineWidth; /**< 能看到的宽度*/
+@property (nonatomic, assign) CGFloat midLineHeight; /**< 能看到的高度*/
 @property (nonatomic, assign) MidLineViewType midLineType;
 @property (nonatomic, strong) UIColor *midLineColor;
 

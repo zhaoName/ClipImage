@@ -4,7 +4,7 @@
 //
 //  Created by zhao on 16/11/1.
 //  Copyright © 2016年 zhaoName. All rights reserved.
-//
+//  图片裁剪的事件处理、交互
 
 #import "ClipImageView.h"
 #import "MidLineView.h"
@@ -40,8 +40,8 @@
 @property (nonatomic, strong) MidLineView *rightMidLine;
 
 @property (nonatomic, assign) CGFloat lastDistance; /**< 先前两个手指的距离*/
-@property (nonatomic, assign) CGPoint imageStartMoveCenter;
-@property (nonatomic, assign) CGPoint startTouchPoint;
+@property (nonatomic, assign) CGPoint imageStartMoveCenter; /**< 开始移动手指时图片的center*/
+@property (nonatomic, assign) CGPoint startTouchPoint; /**< 开始移动手指point*/
 
 @end
 
@@ -402,6 +402,7 @@
     // 图片的Y值最大不能超过裁剪区域的Y值 最小不能小于..
     CGFloat actualY = MIN(MAX(CGRectGetMaxY(self.clipAreaView.clipView.frame) - clipImageH, clipImageY), CGRectGetMinY(self.clipAreaView.clipView.frame));
     
+    // 图片的宽高最大为自身宽高的1.5 最小为裁剪区域的直径+10 
     CGFloat actualW = MIN(MAX(CLIP_ARC_DIAMETER + 10, clipImageW), self.clipImage.size.width * 1.5);
     CGFloat actualH = MIN(MAX(CLIP_ARC_DIAMETER + 10, clipImageH), self.clipImage.size.height * 1.5);
     
