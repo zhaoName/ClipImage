@@ -13,3 +13,8 @@
 圆形：裁剪区域不可移动，图片支持单个手指移动，两个手指缩放。
 
 1、除了要注意CGImageCreateWithImageInRect，*****还要注意缩放图片后，裁剪区域相对于图片的坐标也要变化*****
+
+
+
+参考：
+图片方向：http://www.cocoachina.com/ios/20150605/12021.html
